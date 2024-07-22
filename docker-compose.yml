@@ -7,6 +7,9 @@ services:
     container_name: logger
     volumes:
       - ./dgg-logger/logs:/dgg-logger/logs
+      - ${HOME}/.config/gcloud/application_default_credentials.json:/dgg-logger/credentials/gcp-credentials.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/dgg-logger/credentials/gcp-credentials.json
     restart: unless-stopped
   relay:
     build:
