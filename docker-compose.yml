@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  logger:
+    build:
+      context: ./dgg-logger
+      dockerfile: ./dgg-logger/Dockerfile
+    container_name: logger
+    volumes:
+      - ./dgg-logger/logs:/dgg-logger/logs
+    restart: unless-stopped
+  relay:
+    build:
+      context: ./dgg-relay
+      dockerfile: ./dgg-relay/Dockerfile
+    container_name: relay
+    volumes:
+      - ./dgg-relay/config:/dgg-relay/config
+    restart: unless-stopped
+  dggpt:
+    build:
+      context: ./dggpt
+      dockerfile: ./dggpt/Dockerfile
+    container_name: dggpt
+    volumes:
+      - ./dggpt/config:/dggpt/config
+    restart: unless-stopped
+  emotes:
+    build:
+      context: ./dgg-emotes-bot
+      dockerfile: ./dgg-emotes-bot/Dockerfile
+    container_name: emotes
+    volumes:
+      - ./dgg-emotes-bot/config:/dgg-emotes-bot/config
+    restart: unless-stopped
