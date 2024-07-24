@@ -1,4 +1,14 @@
+name: dgg-services
 services:
+  dgg-services-logger:
+    build:
+      context: ./dgg-services
+      dockerfile: ./Dockerfile
+    container_name: dgg-services-logger
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dgg-services/config:/dgg-services/config
+    restart: unless-stopped
   dgg-logger:
     build:
       context: ./dgg-logger
