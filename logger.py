@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime
 
 import discord
 from discord.ext import commands, tasks
@@ -48,12 +49,15 @@ def convert_to_ansi(message: str):
 
 @bot.event
 async def on_ready():
+    global last_execution
     logger.info(f"Bot is ready. Logged in as {bot.user.name}")
+    last_execution = datetime.now()
     send_logs.start()
 
 
 @tasks.loop(seconds=60)
 async def send_logs():
+    global last_execution
     logger.info("Starting log collection task")
     server = bot.get_guild(SERVER_ID)
 
@@ -79,7 +83,7 @@ async def send_logs():
             continue
 
         try:
-            logs = container.logs(since=send_logs._last_iteration).decode("utf-8")
+            logs = container.logs(since=last_execution).decode("utf-8")
         except APIError as e:
             logger.error(f"Error fetching logs for {container_name}: {e}")
             continue
@@ -92,11 +96,12 @@ async def send_logs():
                 if len(message) + len(chunk) > 1950:
                     await channel.send(convert_to_ansi(message))
                     message = ""
-                message += chunk.strip()
+                message += chunk.strip() + "\n"
             if message:
                 await channel.send(convert_to_ansi(message))
         else:
             logger.info(f"No new logs for {container_name}")
+    last_execution = datetime.now()
     logger.info("Log collection task completed")
 
 
