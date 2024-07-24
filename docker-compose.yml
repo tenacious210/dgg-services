@@ -9,6 +9,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./dgg-services/config:/dgg-services/config
     restart: unless-stopped
+    depends_on:
+      - dgg-logger
+      - dgg-relay
+      - dggpt
+      - dgg-emotes-bot
   dgg-logger:
     build:
       context: ./dgg-logger

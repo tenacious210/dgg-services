@@ -18,7 +18,7 @@ OWNER_ID = config["owner_id"]
 
 intents = discord.Intents.default()
 intents.guilds = True
-bot = commands.Bot(intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 client = docker.from_env()
 
