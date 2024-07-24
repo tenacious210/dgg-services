@@ -58,14 +58,14 @@ async def on_ready():
 @tasks.loop(seconds=60)
 async def send_logs():
     global last_execution
-    logger.info("Starting log collection task")
+    logger.debug("Starting log collection task")
     server = bot.get_guild(SERVER_ID)
 
     try:
         containers = client.containers.list(
             filters={"label": f"com.docker.compose.project=dgg-services"}
         )
-        logger.info(f"Found {len(containers)} containers to monitor")
+        logger.debug(f"Found {len(containers)} containers to monitor")
     except APIError as e:
         logger.error(f"Error listing containers: {e}")
         return
@@ -75,7 +75,7 @@ async def send_logs():
             container = Container()
 
         container_name = container.name.lower()
-        logger.info(f"Processing logs for container: {container_name}")
+        logger.debug(f"Processing logs for container: {container_name}")
 
         channel = discord.utils.get(server.text_channels, name=container_name)
         if channel is None:
@@ -100,9 +100,9 @@ async def send_logs():
             if message:
                 await channel.send(convert_to_ansi(message))
         else:
-            logger.info(f"No new logs for {container_name}")
+            logger.debug(f"No new logs for {container_name}")
     last_execution = datetime.now()
-    logger.info("Log collection task completed")
+    logger.debug("Log collection task completed")
 
 
 if __name__ == "__main__":
