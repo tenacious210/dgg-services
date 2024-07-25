@@ -108,4 +108,4 @@ async def send_logs():
 
 if __name__ == "__main__":
     logger.info("Starting bot")
-    bot.run(DISC_AUTH)
+    bot.run(DISC_AUTH, log_handler=None)
