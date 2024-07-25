@@ -89,7 +89,8 @@ async def send_logs():
             continue
 
         if logs:
-            logger.info(f"Sending logs for {container_name}")
+            if container_name != "dgg-services-logger":
+                logger.info(f"Sending logs for {container_name}")
             chunks = logs.split("\n")
             message = ""
             for chunk in chunks:
