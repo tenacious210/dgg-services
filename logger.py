@@ -66,12 +66,12 @@ async def on_ready():
     log_status.start()
 
 
-@tasks.loop(hours=1)
+@tasks.loop(seconds=60)
 async def log_status():
     filters = {"label": f"com.docker.compose.project=dgg-services"}
     message = ""
     for container in client.api.containers(filters=filters):
-        message += f"{container['Names'][0]}: {container['Status']}"
+        message += f"\n{container['Names'][0]}: {container['Status']}"
     logger.info(f"Container status report:\n{message}")
 
 
