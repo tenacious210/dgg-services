@@ -40,10 +40,20 @@ def convert_to_ansi(message: str):
         "INFO": 34,
         "DEBUG": 37,
     }
+    container_colors = {
+        "dgg-services-logger": 31,
+        "dgg-relay": 33,
+        "dggpt": 34,
+        "dgg-emotes-bot": 35,
+        "dgg-logger": 36,
+    }
     message = f"```ansi\n{message}\n```"
     for level in log_level_colors:
         formatted = f"\u001b[1;{log_level_colors[level]}m{level}\u001b[0;0m"
         message = message.replace(level, formatted)
+    for container in container_colors:
+        formatted = f"\u001b[1;{container_colors[container]}m{container}\u001b[0;0m"
+        message = message.replace(container, formatted)
     return message
 
 
@@ -53,6 +63,16 @@ async def on_ready():
     logger.info(f"Bot is ready. Logged in as {bot.user.name}")
     last_execution = datetime.now()
     send_logs.start()
+    log_status.start()
+
+
+@tasks.loop(hours=1)
+async def log_status():
+    filters = {"label": f"com.docker.compose.project=dgg-services"}
+    message = ""
+    for container in client.api.containers(filters=filters):
+        message += f"{container['Names'][0]}: {container['Status']}"
+    logger.info(f"Container status report:\n{message}")
 
 
 @tasks.loop(seconds=60)
@@ -62,9 +82,8 @@ async def send_logs():
     server = bot.get_guild(SERVER_ID)
 
     try:
-        containers = client.containers.list(
-            filters={"label": f"com.docker.compose.project=dgg-services"}
-        )
+        filters = {"label": f"com.docker.compose.project=dgg-services"}
+        containers = client.containers.list(filters=filters)
         logger.debug(f"Found {len(containers)} containers to monitor")
     except APIError as e:
         logger.error(f"Error listing containers: {e}")
