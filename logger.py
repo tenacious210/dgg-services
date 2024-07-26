@@ -62,16 +62,16 @@ async def on_ready():
     global last_execution
     logger.info(f"Bot is ready. Logged in as {bot.user.name}")
     last_execution = datetime.now()
-    send_logs.start()
     log_status.start()
+    send_logs.start()
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(minutes=30)
 async def log_status():
     filters = {"label": f"com.docker.compose.project=dgg-services"}
     message = ""
     for container in client.api.containers(filters=filters):
-        message += f"\n{container['Names'][0]}: {container['Status']}"
+        message += f"{container['Names'][0][1:]}: {container['Status']}\n"
     logger.info(f"Container status report:\n{message}")
 
 
