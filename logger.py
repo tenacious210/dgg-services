@@ -66,7 +66,7 @@ async def on_ready():
     send_logs.start()
 
 
-@tasks.loop(minutes=30)
+@tasks.loop(minutes=60)
 async def log_status():
     filters = {"label": f"com.docker.compose.project=dgg-services"}
     message = ""
