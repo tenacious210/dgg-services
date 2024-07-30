@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from docker.models.containers import Container
 
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("discord").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 with open("config/config.json", "r") as config_json:
