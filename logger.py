@@ -1,7 +1,6 @@
 import json
 import logging
 from datetime import datetime
-from time import sleep
 
 import discord
 from discord.ext import commands, tasks
@@ -64,7 +63,6 @@ async def on_ready():
     logger.info(f"Bot is ready. Logged in as {bot.user.name}")
     last_execution = datetime.now()
     log_status.start()
-    sleep(5)
     send_logs.start()
 
 
@@ -77,7 +75,7 @@ async def log_status():
     logger.info(f"Container status report:\n{message}")
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=90)
 async def send_logs():
     global last_execution
     logger.debug("Starting log collection task")
