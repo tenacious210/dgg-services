@@ -41,11 +41,11 @@ def get_containers() -> list[Container]:
 
 
 def get_status() -> str:
+    filters = {"label": f"com.docker.compose.project=dgg-services"}
     message = ""
-    for container in get_containers():
+    for container in client.api.containers(filters=filters):
         message += f"{container['Names'][0][1:]}: {container['Status']}\n"
-    message = f"Container status report:\n{message}"
-    return message
+    return f"Container status report:\n{message}"
 
 
 def get_container_from_channel(channel_name: str) -> Container:
@@ -91,7 +91,7 @@ async def on_ready():
     log_status.start()
     sleep(5)
     send_logs.start()
-    bot.tree.sync()
+    await bot.tree.sync()
 
 
 @tasks.loop(seconds=65)
