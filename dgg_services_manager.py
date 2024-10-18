@@ -148,31 +148,35 @@ async def status_command(ctx: Interaction):
 @bot.tree.command(name="restart")
 async def restart_container(ctx: Interaction):
     """Restarts the container of the channel this command is used in"""
+    await ctx.response.defer(thinking=True)
     if container := get_container_from_channel(ctx.channel.name):
         container.restart()
-        await ctx.response.send_message(f"Container {ctx.channel.name} restarted")
+        await ctx.followup.send(f"Container {ctx.channel.name} restarted")
     else:
-        await ctx.response.send_message(f"No containers named {ctx.channel.name}")
+        await ctx.followup.send(f"No containers named {ctx.channel.name}")
 
 
 @bot.tree.command(name="start")
 async def start_container(ctx: Interaction):
     """Starts the container of the channel this command is used in"""
+    await ctx.response.defer(thinking=True)
+
     if container := get_container_from_channel(ctx.channel.name):
         container.start()
-        await ctx.response.send_message(f"Container {ctx.channel.name} started")
+        await ctx.followup.send(f"Container {ctx.channel.name} started")
     else:
-        await ctx.response.send_message(f"No containers named {ctx.channel.name}")
+        await ctx.followup.send(f"No containers named {ctx.channel.name}")
 
 
 @bot.tree.command(name="stop")
 async def restart_container(ctx: Interaction):
     """Stops the container of the channel this command is used in"""
+    await ctx.response.defer(thinking=True)
     if container := get_container_from_channel(ctx.channel.name):
         container.stop()
-        await ctx.response.send_message(f"Container {ctx.channel.name} stopped")
+        await ctx.followup.send(f"Container {ctx.channel.name} stopped")
     else:
-        await ctx.response.send_message(f"No containers named {ctx.channel.name}")
+        await ctx.followup.send(f"No containers named {ctx.channel.name}")
 
 
 if __name__ == "__main__":
