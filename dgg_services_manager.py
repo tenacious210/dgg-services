@@ -8,11 +8,8 @@ from discord import app_commands, Interaction
 from discord.ext import commands, tasks
 import docker
 from docker.errors import APIError
+from docker.models.containers import Container
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from docker.models.containers import Container
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("discord").setLevel(logging.WARNING)
