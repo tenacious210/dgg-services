@@ -32,7 +32,7 @@ logger.info("Successfully connected to Docker.")
 def get_containers() -> list[Container]:
     try:
         filters = {"label": f"com.docker.compose.project=dgg-services"}
-        containers = client.containers.list(filters=filters)
+        containers = client.containers.list(all=True, filters=filters)
     except APIError as e:
         logger.error(f"Error listing containers: {e}")
         return
@@ -42,7 +42,7 @@ def get_containers() -> list[Container]:
 def get_status() -> str:
     filters = {"label": f"com.docker.compose.project=dgg-services"}
     message = ""
-    for container in client.api.containers(filters=filters):
+    for container in client.api.containers(all=True, filters=filters):
         message += f"{container['Names'][0][1:]}: {container['Status']}\n"
     return f"Container status report:\n{message}"
 
