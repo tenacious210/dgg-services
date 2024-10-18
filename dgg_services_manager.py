@@ -23,7 +23,7 @@ SERVER_ID = config["server_id"]
 OWNER_ID = config["owner_id"]
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="/", intents=intents)
 
 client = docker.from_env()
 logger.info("Successfully connected to Docker.")
