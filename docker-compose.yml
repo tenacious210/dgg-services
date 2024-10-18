@@ -1,10 +1,10 @@
 name: dgg-services
 services:
-  dgg-services-logger:
+  dgg-services-manager:
     build:
       context: ./dgg-services
       dockerfile: ./Dockerfile
-    container_name: dgg-services-logger
+    container_name: dgg-services-manager
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./dgg-services/config:/dgg-services/config
