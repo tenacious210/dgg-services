@@ -140,12 +140,12 @@ async def log_status():
     logger.info(get_status())
 
 
-@bot.command(name="status")
+@bot.tree.command(name="status")
 async def status_command(ctx: Interaction):
     await ctx.response.send_message(convert_to_ansi(get_status()))
 
 
-@bot.command(name="restart")
+@bot.tree.command(name="restart")
 async def restart_container(ctx: Interaction):
     """Restarts the container of the channel this command is used in"""
     if container := get_container_from_channel(ctx.channel.name):
@@ -155,7 +155,7 @@ async def restart_container(ctx: Interaction):
         await ctx.response.send_message(f"No containers named {ctx.channel.name}")
 
 
-@bot.command(name="start")
+@bot.tree.command(name="start")
 async def start_container(ctx: Interaction):
     """Starts the container of the channel this command is used in"""
     if container := get_container_from_channel(ctx.channel.name):
@@ -165,7 +165,7 @@ async def start_container(ctx: Interaction):
         await ctx.response.send_message(f"No containers named {ctx.channel.name}")
 
 
-@bot.command(name="stop")
+@bot.tree.command(name="stop")
 async def restart_container(ctx: Interaction):
     """Stops the container of the channel this command is used in"""
     if container := get_container_from_channel(ctx.channel.name):
