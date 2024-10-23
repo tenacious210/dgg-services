@@ -123,7 +123,7 @@ async def send_logs():
             chunks = logs.split("\n")
             message = ""
             for chunk in chunks:
-                if len(message) + len(chunk) > 1950:
+                if len(convert_to_ansi(message + chunk)) > 1950:
                     await channel.send(convert_to_ansi(message))
                     message = ""
                 message += chunk.strip() + "\n"
